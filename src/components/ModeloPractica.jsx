@@ -9,6 +9,7 @@ export default function ModeloPractica() {
   const screenTexture = useLoader(TextureLoader, "/assets/publicidad.jpg");
   const chairAudioRef = useRef(new Audio("/assets/chair-move.mp3")); // 🔹 Sonido de la silla
   const audioRef = useRef(new Audio("/assets/ambiente.mp3")); // 🔊 Sonido ambiente
+  const penguinAudioRef = useRef(new Audio("/assets/chair-move.mp3")); // 🔹 Sonido del pingüino
   const videoRef = useRef(document.createElement("video"));
 
   const modelRef = useRef();
@@ -17,6 +18,7 @@ export default function ModeloPractica() {
   const notesRef = useRef([]);
   const screenRef = useRef();
   const plantRef = useRef();
+  const penguinRef = useRef();
   const [targetChairPosition, setTargetChairPosition] = useState(null);
   const [chairInitialPos, setChairInitialPos] = useState(null);
 
@@ -54,6 +56,7 @@ export default function ModeloPractica() {
     chairRef.current = gltf.scene.getObjectByName("chair");
     screenRef.current = gltf.scene.getObjectByName("desktop-plane-1");
     plantRef.current = gltf.scene.getObjectByName("plant");
+    penguinRef.current = gltf.scene.getObjectByName("penguin");
 
     if (chairRef.current) {
       setChairInitialPos(chairRef.current.position.clone());
@@ -151,6 +154,10 @@ export default function ModeloPractica() {
     }
   };
 
+  const handlePenguinClick = () => {
+    penguinAudioRef.current.play().catch((error) => console.error("❌ Error al reproducir audio:", error));
+  };
+
   const handleObjectClick = (event) => {
     event.stopPropagation();
     const clickedObject = event.object.name;
@@ -169,6 +176,9 @@ export default function ModeloPractica() {
     } else if (clickedObject === "desktop-plane-0") {
       console.log("🖥️ Click en mause");
       handleScreenClick();
+    } else if (clickedObject === "penguin") {
+      console.log("🐧 Click en pingüino");
+      handlePenguinClick();
     }
   };
 
