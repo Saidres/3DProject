@@ -7,6 +7,7 @@ export default function ModeloPractica() {
   const gltf = useLoader(GLTFLoader, "/assets/model.glb");
   const texture = useLoader(TextureLoader, "/assets/baked.jpg");
   const screenTexture = useLoader(TextureLoader, "/assets/jck.jpg");
+  const pictureTexture = useLoader(TextureLoader, "/assets/jck.jpg"); // Cargar la textura de la imagen personalizada
   const chairAudioRef = useRef(new Audio("/assets/chair-move.mp3"));
   const audioRef = useRef(new Audio("/assets/ambiente.mp3")); 
   const penguinAudioRef = useRef(new Audio("/assets/penguin-sound.mp3")); 
@@ -20,6 +21,7 @@ export default function ModeloPractica() {
   const plantRef = useRef();
   const penguinRef = useRef();
   const shelvingRef = useRef(); // Referencia para el elemento "shelving"
+  const pictureRef = useRef(); // Referencia para el elemento "picture"
   const [targetChairPosition, setTargetChairPosition] = useState(null);
   const [chairInitialPos, setChairInitialPos] = useState(null);
 
@@ -46,6 +48,9 @@ export default function ModeloPractica() {
         } else if (child.name === "desktop-plane-1") {
           child.material = child.material.clone();
           child.material.map = screenTexture;
+        } else if (child.name === "picture") {
+          child.material = child.material.clone();
+          child.material.map = pictureTexture; // Asignar la textura de la imagen personalizada
         } else {
           child.material.map = texture;
         }
@@ -59,6 +64,7 @@ export default function ModeloPractica() {
     plantRef.current = gltf.scene.getObjectByName("plant");
     penguinRef.current = gltf.scene.getObjectByName("penguin");
     shelvingRef.current = gltf.scene.getObjectByName("shelving"); // Obtener referencia del elemento "shelving"
+    pictureRef.current = gltf.scene.getObjectByName("picture"); // Obtener referencia del elemento "picture"
 
     if (chairRef.current) {
       setChairInitialPos(chairRef.current.position.clone());
