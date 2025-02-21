@@ -6,10 +6,10 @@ import { TextureLoader, Sprite, SpriteMaterial, VideoTexture, Vector3 } from "th
 export default function ModeloPractica() {
   const gltf = useLoader(GLTFLoader, "/assets/model.glb");
   const texture = useLoader(TextureLoader, "/assets/baked.jpg");
-  const screenTexture = useLoader(TextureLoader, "/assets/publicidad.jpg");
-  const chairAudioRef = useRef(new Audio("/assets/chair-move.mp3")); // 🔹 Sonido de la silla
-  const audioRef = useRef(new Audio("/assets/ambiente.mp3")); // 🔊 Sonido ambiente
-  const penguinAudioRef = useRef(new Audio("/assets/chair-move.mp3")); // 🔹 Sonido del pingüino
+  const screenTexture = useLoader(TextureLoader, "/assets/jck.jpg");
+  const chairAudioRef = useRef(new Audio("/assets/chair-move.mp3"));
+  const audioRef = useRef(new Audio("/assets/ambiente.mp3")); 
+  const penguinAudioRef = useRef(new Audio("/assets/penguin-sound.mp3")); 
   const videoRef = useRef(document.createElement("video"));
 
   const modelRef = useRef();
@@ -19,6 +19,7 @@ export default function ModeloPractica() {
   const screenRef = useRef();
   const plantRef = useRef();
   const penguinRef = useRef();
+  const shelvingRef = useRef(); // Referencia para el elemento "shelving"
   const [targetChairPosition, setTargetChairPosition] = useState(null);
   const [chairInitialPos, setChairInitialPos] = useState(null);
 
@@ -57,6 +58,7 @@ export default function ModeloPractica() {
     screenRef.current = gltf.scene.getObjectByName("desktop-plane-1");
     plantRef.current = gltf.scene.getObjectByName("plant");
     penguinRef.current = gltf.scene.getObjectByName("penguin");
+    shelvingRef.current = gltf.scene.getObjectByName("shelving"); // Obtener referencia del elemento "shelving"
 
     if (chairRef.current) {
       setChairInitialPos(chairRef.current.position.clone());
@@ -158,6 +160,16 @@ export default function ModeloPractica() {
     penguinAudioRef.current.play().catch((error) => console.error("❌ Error al reproducir audio:", error));
   };
 
+  const handleShelvingClick = () => {
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+      console.log("🎵 Música activada");
+    } else {
+      audioRef.current.pause();
+      console.log("🔇 Música pausada");
+    }
+  };
+
   const handleObjectClick = (event) => {
     event.stopPropagation();
     const clickedObject = event.object.name;
@@ -179,6 +191,9 @@ export default function ModeloPractica() {
     } else if (clickedObject === "penguin") {
       console.log("🐧 Click en pingüino");
       handlePenguinClick();
+    } else if (clickedObject === "shelving") {
+      console.log("📚 Click en estantería");
+      handleShelvingClick();
     }
   };
 
